@@ -1,0 +1,269 @@
+\texttt{\chapter{Digital forensics analysis}
+\label{S:df-analysis}}
+
+The Sleuth Kit (TSK) is an open source cross-platform collection of terminal
+applications and a C library that allows investigators to analyze disk images
+and recover files from them \cite{tsk-web}. It is divided in file system and
+volume tools. 
+
+The first group allows investigators to examine the file system of a suspect
+computer in a non-intrusive way. Main file system tools are shown on Table
+\ref{T:tsk-fs-tools}.
+
+\begin{table}[htb]
+\begin{center}
+\begin{tabular}{|l|l|l|}
+\hline
+{\bf Command }	& {\bf Description }  \\ \hline \hline
+fsstat & Shows file system details and statistics \\ \hline \hline
+fls	& Lists allocated and deleted file names in a directory \\ \hline
+ffind & Finds allocated and unallocated file names \\ \hline \hline
+icat & Extracts the data units of a file \\ \hline
+\end{tabular}
+\caption{Main file system tools from TSK \cite{tsk-tools-wiki}}
+\label{T:tsk-fs-tools}
+\end{center}
+\end{table}
+
+Volume tools are the ones that brings off the layout of disks and another media.
+They are needed to identify where partitions are located to be able to proceed
+with a file system analysis. Table \ref{T:tsk-v-tools} lists main volume tools.
+
+\begin{table}[htb]
+\begin{center}
+\begin{tabular}{|l|l|l|}
+\hline
+{\bf Command }	& {\bf Description }  \\ \hline \hline
+mmls & Displays the layout of a disk \\ \hline \hline
+mmstat & Display details about a volume system \\ \hline
+\end{tabular}
+\caption{Main volume tools from TSK \cite{tsk-tools-wiki}}
+\label{T:tsk-v-tools}
+\end{center}
+\end{table}
+
+In order to explain how The Sleuth Kit works easily, an example will be used.
+In that specific case, an investigator will extract the timeline for an image
+and will look for a file called \textit{letter.txt} to print its content.
+
+\section{The Sleuth Kit analysis}
+\label{S:tsk-analysis}
+
+To start the TSK analysis, the command \textit{mmls} is used to output the 
+information of all partitions. If volume type is not specified, TSK will
+autodetect it. The output will look like Listing \ref{L:tsk-mmls-output}.
+This example has tree volumes:
+
+\begin{description}
+	\item [Primary Table (\#0)]
+	It contains the primary table. 
+	
+	\item [Unallocated]
+	Unallocated space.
+
+	\item [Win95 FAT32 (0x0C)]
+	This partition has an offset of 56 sectors and it contains a file system formatted with FAT32.
+	
+\end{description}
+
+\begin{terminal}[caption=TSK mmls output example, label=L:tsk-mmls-output]
+	%
+	\terminalcmd[mmls hdd-001.dd]
+	%
+	DOS Partition Table
+	Offset Sector: 0
+	Units are in 512-byte sectors
+	
+	Slot         Start        End          Length       Description
+	00:  Meta    0000000000   0000000000   0000000001   Primary Table (#0)
+	01:  -----   0000000000   0000000055   0000000056   Unallocated
+	02:  00:00   0000000056   0007925759   0007925704   Win95 FAT32 (0x0C)
+	%\terminalcmd%
+\end{terminal}
+
+To perform a deeper analysis, file system tools must be used. In that case,
+those will need the offset of 56 sectors to be specified. The  first tool,
+\textit{fsstat}, will display some file system characteristics, for instance,
+root inode, sector size and the file system layout.
+
+Also, the registers inside the disk can be listed in a non-intrusive way using 
+\textit{fls}. In this specific example (Listing \ref{L:fls-output-example}),
+the file system contains four folders. One of them,  
+\textit{\_NTITL\textasciitilde1} is deleted. Also, some virtual registers are
+displayed (\$MBR, \$FAT1, \$FAT2, \$OrphanFiles). If it is necessary to go
+through the file system tree, a directory inode can be specified to list
+registers inside it or analyze whole disk recursively.
+
+\begin{terminal}[caption=TSK fls output example,label=L:fls-output-example]
+%
+\terminalcmd[fls -o 56 hdd-001.dd]
+%
+d/d 4:	.Trash-1000
+d/d * 5:	_NTITL~1
+d/d 7:	Personal
+d/d 9:	Imagenes
+v/v 126563459:	$MBR
+v/v 126563460:	$FAT1
+v/v 126563461:	$FAT2
+d/d 126563462:	$OrphanFiles
+%\terminalcmd%
+\end{terminal}
+
+Several times, it is necessary to export the whole file system in order to obtain
+processed information using other tools. The command arguments that are
+necessary are:
+
+\begin{terminal}[caption=Export file system to CSV,label=L:fls-csv-export]
+%
+\terminalcmd[fls -m / -o 56 -r hdd-001.dd > fs.csv]
+%
+%\terminalcmd%
+
+\end{terminal}
+
+This CSV file can also be used to generate timelines using a specific TSK tool 
+called \textit{mactime}. The output format of \textit{mactime} can be also
+adjusted to process it with any CSV program. Columns shown on Listing
+\ref{L:tsk-timeline} are: date, file size, activity type, Unix permission, User
+\& Group IDs, inode and file name. Allowed activity types are: modified (m),
+accessed (a), changed (c) and created (b).
+
+\begin{terminal}[caption=Haxe python transcompilation command, label=L:tsk-timeline]
+%
+\terminalcmd[haxe -main Main.hx -python main.py]
+%
+Xxx Xxx 00 0000 00:00:00   338558 ..c. r/rrwxrwxrwx 0        0        10758    /Imagenes/bufon.png
+         10 ..c. r/rrwxrwxrwx 0        0        10889    /Personal/file.txt
+       4096 ..c. d/drwxrwxrwx 0        0        11142    /.Trash-1000/info
+       4096 ..c. d/drwxrwxrwx 0        0        11144    /.Trash-1000/files
+         70 ..c. r/rrwxrwxrwx 0        0        11274    /.Trash-1000/info/carta.txt.trashinfo
+         72 ..c. r/rrwxrwxrwx 0        0        11401    /.Trash-1000/files/carta.txt
+       4096 ..c. d/drwxrwxrwx 0        0        4        /.Trash-1000
+          0 ..c. d/drwxrwxrwx 0        0        5        /_NTITL~1 (deleted)
+       4096 ..c. d/drwxrwxrwx 0        0        7        /Personal
+       4096 ..c. d/drwxrwxrwx 0        0        9        /Imagenes
+Fri Aug 25 2017 00:00:00   338558 .a.. r/rrwxrwxrwx 0        0        10758    /Imagenes/bufon.png
+         10 .a.. r/rrwxrwxrwx 0        0        10889    /Personal/file.txt
+       4096 .a.. d/drwxrwxrwx 0        0        11142    /.Trash-1000/info
+       4096 .a.. d/drwxrwxrwx 0        0        11144    /.Trash-1000/files
+         70 .a.. r/rrwxrwxrwx 0        0        11274    /.Trash-1000/info/letter.txt.trashinfo
+         72 .a.. r/rrwxrwxrwx 0        0        11401    /.Trash-1000/files/letter.txt
+       4096 .a.. d/drwxrwxrwx 0        0        4        /.Trash-1000
+          0 .a.. d/drwxrwxrwx 0        0        5        /_NTITL~1 (deleted)
+       4096 .a.. d/drwxrwxrwx 0        0        7        /Personal
+       4096 .a.. d/drwxrwxrwx 0        0        9        /Imagenes
+Fri Aug 25 2017 15:06:56   338558 m..b r/rrwxrwxrwx 0        0        10758    /Imagenes/bufon.png
+Fri Aug 25 2017 15:07:18     4096 m..b d/drwxrwxrwx 0        0        9        /Imagenes
+Fri Aug 25 2017 15:07:22        0 m..b d/drwxrwxrwx 0        0        5        /_NTITL~1 (deleted)
+Fri Aug 25 2017 15:07:30     4096 m..b d/drwxrwxrwx 0        0        4        /.Trash-1000
+Fri Aug 25 2017 15:08:04       72 m..b r/rrwxrwxrwx 0        0        11401    /.Trash-1000/files/carta.txt
+Fri Aug 25 2017 15:08:06       70 m..b r/rrwxrwxrwx 0        0        11274    /.Trash-1000/info/carta.txt.trashinfo
+Fri Aug 25 2017 15:08:12     4096 m..b d/drwxrwxrwx 0        0        11142    /.Trash-1000/info
+< 4096 m..b d/drwxrwxrwx 0        0        11144    /.Trash-1000/files
+Fri Aug 25 2017 15:08:22       10 m..b r/rrwxrwxrwx 0        0        10889    /Personal/file.txt
+       4096 m..b d/drwxrwxrwx 0        0        7        /Personal
+%\terminalcmd%
+
+\end{terminal}
+
+As Listing \ref{L:tsk-timeline} shows, the inode 11401 contains a file called
+letter.txt. Print its content can be easily done using the command
+\textit{icat}. 
+
+
+\begin{terminal}[caption=Export a file contained inside the file system,label=L:icat-export]
+%
+\terminalcmd[icat -o 56 hdd-001.dd 11401]
+%
+Mr. Someone,
+You must know I am guilty!
+
+Best regards,
+Nobody Jones
+%\terminalcmd%
+
+\end{terminal}
+
+
+\section{The Sleuth Kit JavaScript}
+
+% TODO:
+% Quiero dar enfasis en que esto es parte del desarrollo del proyecto y no se 
+% si esta bien hecho asi...
+
+Bearing in mind the need to develop a wrapper to connect TSK with a JavaScript
+application \textbf{The Sleuth Kit JavaScript (TSK-js) has been created}. This
+wrapper must be able to execute the same analysis carried out in the previous chapter
+(Chapter \ref{S:tsk-analysis}) but using JavaScript.
+
+It has been raised to create a JavaScript object with one construction argument
+in with the image file path is specified. This object will have the necessary
+methods to perform the entire analysis. Those methods are explained on Table
+\ref{T:tsk-js-object-methods}.
+
+\begin{table}[htb]
+\begin{center}
+\begin{tabular}{|l|l|l|}
+\hline
+{\bf Method }	& {\bf Arguments} & {\bf Returns } \\ \hline \hline
+Analyze	& None & Type (disk/partition) and if type disk, returns\\
+& 	   & its partitions specifying the offset sectors \\ \hline
+List & Offset sectors and inode & List file system files \\ \hline
+Get & Offset sectors and inode & Buffer with inode content \\ \hline
+Timeline & Offset sectors, inode & Timeline results \\ 
+& and callback function & \\ \hline
+Search & Needle, offset sectors, & None \\ 
+& inode and callback function & \\ \hline
+\end{tabular}
+\caption{TSK-js object methods}
+\label{T:tsk-js-object-methods}
+\end{center}
+\end{table}
+
+Search and Timeline take some time to execute. That is why both have a callback
+function as parameter. Each time a result is found, this callback function is
+called.
+
+An example of JavaScript code that can perform the analysis proposed on 
+Chapter \ref{S:tsk-analysis} is shown of Listing \ref{L:tsk-js-analysis}.
+
+\begin{codefigure}
+	\jsexternal[
+		caption=The Sleuth Kit JavaScript analysis,
+		label=L:tsk-js-analysis,
+		%
+		classoffset=1,
+		morekeywords={TSK},
+	]{source/tsk-js-analysis.js}
+\end{codefigure}
+
+This analysis can be executed using the following command:
+
+\begin{terminal}[caption=Execute The Sleuth Kit JavaScript analysis
+,label=L:tsk-js-execute-analysis]
+%
+\terminalcmd[node analysis.js hdd-001.dd]
+%
+File found!
+Print it's content:
+---------------------------
+Mr. Someone,
+You must know I am guilty!
+
+Best regards,
+Nobody Jones
+---------------------------
+Timeline length '29'
+%\terminalcmd%
+
+\end{terminal}
+
+The implementation of this package is done using \CC and node-gyp that is a 
+compiler to create Node.js addons \cite{node-gyp-github}.
+
+A TypeScript types file is provided in order to help transcompiler with type 
+validations. Typings can be found on Appendix \ref{APP:tsk-js-typings}.
+This package is available on Node Package Manager
+(\url{https://www.npmjs.com/package/tsk-js}). The source code is also available
+on GitHub (\url{https://github.com/FRG-UPC-Deliverables/tsk-js}).
+

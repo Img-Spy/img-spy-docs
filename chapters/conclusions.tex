@@ -1,0 +1,73 @@
+\cleardoublepage
+\phantomsection
+\chapter*{Conclusions}
+
+The development of a cross-platform digital forensics applications is a long
+process with many key decisions. The first one is to choose a technological
+environment. This task is not that easy due to the great amount of
+very-different solutions. But, nowadays web technologies are standing strong in
+terms of cross-platform compatibility. \textbf{A well-known solution} that many
+companies are using today is \textbf{Electron} \cite{electron-web}, which uses
+Chromium as library to instantiate Chrome windows. 
+
+Once the work environment is well-defined, an overview of the application 
+should be provided. The software architecture defines it by using black boxes
+and defining their interactions. Model-view-controller (MVC) is a mature
+widely-used architecture. Its main disadvantage is that becomes complex when
+increasing the number of views with interaction between themselves. Since
+this is the case of the application we have developed, MVC is not a good
+architecture in this case.
+
+The direct evolution of MVC is Flux, which was defined by Facebook to fix its
+scalabilty problem. In order to solve this problem, Flux purposes the use of
+a unique state to render whole the application. In this project we have
+used \textbf{React-Redux} to build  \textbf{flux-like architecture}
+Nevertheless, other libraries, such as Redux-Observables, have been used in
+order to address React-Redux lacks.
+
+With those good bases, a complete application can be build but there is still a
+need to implement the computationally complex operations of the digital 
+forensics work flow. Those have to be coded in a low programming language to
+guarantee a good efficiency. The Sleuth Kit provides a C library that
+implements those operations. Therefore, \textbf{The Sleuth Kit JavaScript, a
+Node.js wrapper, has been created} to let JavaScript use those operations.
+
+Finally, \textbf{Img-Spy, the digital forensics application developed to fulfill
+the goal of this project, defines three tools}: \textit{Explorer},
+\textit{Timeline} and \textit{Search}. Those tools let an investigator to
+analyze the file system of an image in a non-intrusive way, create a timeline
+based on actions performed on the disk and search which files contain a
+specific string.
+
+During the development process, many interesting or difficult tasks where found,
+for instance, watching changes on the file system of user's computer, performing
+actions in parallel using JavaScript and defining a user-friendly interface
+supporting, for example, resize-panels or multiple themes.
+
+Looking ahead, many optimizations and features can be added to Img-spy. First,
+\textit{Explorer} tool can be improved in terms of performance adding Redux
+selectors and reducing React rerenders. Also, the hash is always computed
+without asking the user, consuming too many resources that are not always
+required.
+
+\textit{Timeline} tool can be also improved by adding graphs to represent those
+actions in a more visual way. Add filters can also help investigators to remove
+useless information. For instance, a useful filter could be to see just the
+files of a specific search result.
+
+In many cases, search files by name is also needed. Therefore, \textit{Search}
+tool can implement this operation. More custom searches can be executed using
+Regex.
+
+There is a saying that “Programming can be fun, so can cryptography; however
+they should not be combined” \cite{code-complete}. So regarding code quality,
+comments can be added to help new developers understand easily how the software 
+works.
+
+Finally, new tools can be added in order to detect mismatches on file 
+extensions or to help investigators to write the final report. Just take always
+into account that, as Gordon Bell said:
+
+\begin{quote}
+	“Every big computing disaster has come from taking too many ideas and putting them in one place”.
+\end{quote}

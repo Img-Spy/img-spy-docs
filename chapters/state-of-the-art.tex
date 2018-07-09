@@ -1,0 +1,107 @@
+\chapter{State of the art}
+\label{S:state-of-the-art}
+
+There are many tools that akre used to perform digital forensics analysis. They
+can be classified in: 
+
+\begin{description}
+	\item[Memory tools] They hare capable to acquire the current RAM memory of
+	a computer and analyze it. They often have tools to list the processes
+	running at that moment, get networking information (IP address, ARP tables,
+	etc), among others.
+
+	\item[Disk tools] They extract the whole information of a disk (or other
+	physical memory storages) and analyze them without doing any modification
+	to guaranty data integrity. They can list files inside the file system and
+	recover the deleted ones. Sometimes they offer higher level functionalities 
+	as generate timelines of the disk activity, get the history of internet
+	navigation, etc.
+
+	\item[Network tools] Network tools can capture the traffic generated from 
+	the computer that is running the program.
+\end{description}
+
+Some examples are shown in Table \ref{T:digital-forensic-tools}.
+
+\begin{landscape}
+\begin{table}
+	\centering
+	\begin{tabular}{|c||c|c|c|c|c|c|c|c|}
+		% HEADER ---------------------------------------------------------------
+		\hline 
+		\uppercase{ & 
+			\thead{Tools} & 
+			\thead{open} & 
+			\thead{GUI} & 
+			\thead{win} & 
+			\thead{OSX} & 
+			\thead{Linux} & 
+			\thead{comments}
+		} \\
+		\hline
+		% BODY -----------------------------------------------------------------
+		\makecell{ Digital Forensics \\ Framework }	& Disk &
+		\checkmark & \checkmark & \checkmark & \checkmark & \checkmark &
+		\makecell{
+			At least two years without any update.
+		} \\ \hline
+		% ----------------------------------------------------------------------
+		X-Ways Forensics & \makecell{ Disk \& \\ Application } &
+		& \checkmark & \checkmark & & &
+		{
+			
+		} \\ \hline
+		% ----------------------------------------------------------------------
+		EnCase & Multi-purpose &
+		& \checkmark & \checkmark & & &
+		{
+			
+		} \\ \hline
+		% ----------------------------------------------------------------------
+		Volatility & Memory &
+		\checkmark & & \checkmark & \checkmark & \checkmark &
+		{
+		} \\ \hline
+		% ----------------------------------------------------------------------
+		Bulk Extractor & \makecell{ Memory \& \\ Disk } & 
+		\checkmark & \checkmark & & \checkmark & \checkmark &
+		{
+		} \\ \hline
+		% ----------------------------------------------------------------------
+		The Sleuth Kit & Disk &
+		\checkmark & & \checkmark & \checkmark & \checkmark &
+		{
+			
+		} \\ \hline
+		% ----------------------------------------------------------------------
+		Autopsy & Disk &
+		\checkmark & \checkmark & \checkmark & \checkmark & \checkmark &
+		\makecell{
+			From The Sleuth Kit creators. \\
+			Difficult to compile in UNIX systems.
+		} \\ \hline
+		% ----------------------------------------------------------------------
+		Wireshark & Network &
+		\checkmark & \checkmark & \checkmark & \checkmark & \checkmark &
+		{
+		} \\ \hline
+		% ----------------------------------------------------------------------
+		Xplico & Network &
+		\checkmark & \checkmark & & \checkmark & \checkmark &
+		{
+		} \\ \hline
+		% ----------------------------------------------------------------------
+
+	\end{tabular}
+	\caption{Digital forensic tools}
+	\label{T:digital-forensic-tools}
+\end{table}
+\end{landscape}
+
+% Fuentes:
+% https://resources.infosecinstitute.com/computer-forensics-tools/#gref
+
+%% X-Ways Forensics
+
+% https://www.youtube.com/watch?v=ggSXfAf4Eko&index=5&list=PLB0pU0wP67A9LezmyZO5I6DnHPEWjgjOD
+

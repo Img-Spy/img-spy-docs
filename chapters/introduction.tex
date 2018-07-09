@@ -1,0 +1,92 @@
+\cleardoublepage
+\phantomsection
+\chapter*{Introduction}
+
+Nowadays it is impossible to think our daily lifes without digital
+technologies. They are involved in most of our daily actions, such as, to talk
+with friends, to read news, documents transport and entertainment. For this
+reason, our electronic devices can be considered as digital sources of 
+information that can even prove possible alibis.
+
+Digital forensics science, or digital forensics, is defined as:
+
+\begin{quote}
+“The use of scientifically derived and proven methods toward the preservation,
+collection, validation, identification, analysis, interpretation,
+documentation, and presentation of digital evidence derived from digital
+sources for the purpose of facilitation or furthering the reconstruction of
+events found to be criminal, or helping to anticipate unauthorized actions
+shown to be disruptive to planned operations” \cite{DFRWS-df-road-map}
+\end{quote}
+
+In several cases, when a search warrant is given to investigators, they can
+proceed with the acquisition and analysis of a suspect's digital data source,
+for instance, computer hard disks, mobile phones, etc. Using this information,
+they can look for evidences that prove the suspect's innocence or guiltiness.
+
+There are many ways to do this analysis, but the more generic one presented in
+\cite{ds-phases}, consists on:
+
+\begin{description}
+	\item [Pre-Process]
+		This is one of the most important steps; although it is sometimes 
+		forgotten. It consists of all the tasks needed to be performed
+		before the collection of data, including the necessary approvals 
+		by relevant authorities.
+
+	\item [Acquisition \& Preservation]
+		Once everything is prepared, now the investigator can acquire 
+		the data. An image and a digest of the analyzed data have to be
+		computed. The image is an exact copy of the data and the digest is the
+		result of a fixed-size unidirectional function, called hash, 
+		that summarizes the image. Among other properties, a hash function must
+		be collusion-resistant; that is to say, that it has to be
+		computationally infeasible to find two images with the same digest or
+		to modify a image in such a way the digest remains the same.
+
+		That way, if anyone modifies the image and the digest is computed
+		again using the modified image, a different value will be 
+		retrieved. So this procedure stands to guarantee the proof 
+		integrity.
+		
+		Although not very formal, in the rest of the document we will use the
+		term hash to refer to both the hash function and the digest (the result
+		of the hash function), for it is the most widely way of using it.
+
+	\item [Analysis]
+		This is the main phase of the investigation. It consists on extracting
+		the relevant information acquired before. Many techniques can be 
+		used: data recovery, words lookup, etc. Note that, on this step,
+		some tools may be used to be able to perform a proper analysis.
+
+	\item [Presentation]
+		A good analysis is useless if it is not presented in an easy to 
+		understand manner. After this phase, the innocence of the
+		suspect has to be proven or refused.
+
+	\item [Post-Process]
+		Physical and digital proofs or evidences have to be returned and a
+		report must be written to finish the case.
+
+\end{description}
+
+There are many digital forensics analysis tools. A very complete software is 
+\textbf{EnCase Forensic} \cite{encase-web}. It has a lot of tools that can be 
+used from the acquisition step until the final report. But its main disadvantage
+is that it is not open source.
+
+Another well-known software regarding digital forensics is \textbf{The Sleuth
+Kit} \cite{tsk-web}. This open-source cross-platform toolkit is a collection 
+of terminal applications and a C library that allows you to analyze disk images
+and recover files from them. The Sleuth Kit team also developed
+\textbf{Autopsy}, which is a Windows' user interface to efficiently analyze
+hard drives and smart phones.
+
+Due to the lack of open-source cross-platform tools with a friendly user
+interface, the objective of this project is to develop one that eases the
+forensic analysts' task addressing from the very beginning the main
+functionalities of a digital forensics software. The start point is to use The
+Sleuth Kit's C library  \cite{tsk-web} since it is a cross-platform very-mature
+project.
+
+

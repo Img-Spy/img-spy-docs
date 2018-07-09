@@ -1,0 +1,2 @@
+call TexProject("plantilla_tfc", "output")
+

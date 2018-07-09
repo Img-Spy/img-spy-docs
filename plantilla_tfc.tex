@@ -1,0 +1,277 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%                                                                  %%%%% 
+%%%%%%          Maqueta de memòria TFC/PFC de l'EETAC                   %%%%% 
+%%%%%%                                                                  %%%%% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                                                         %%
+%%          Autor: Xavier Prats i Menéndez (xavier.prats@upc.edu)          %% 
+%%                  Technical University of Catalonia (UPC)                %%
+%%                                                                         %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%      This work is licensed under the Creative Commons  Attribution-     %%
+%%   -Noncommercial-Share Alike 3.0 Spain License. To view a copy of this  %% 
+%%    license, visit http://creativecommons.org/licenses/by-nc-sa/3.0/es/  %%
+%%    or send a letter to Creative Commons, 171 Second Street, Suite 300,  %%
+%%                  San Francisco,California, 94105, USA.                  %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Versió 2.1 - Juliol 2012                                                %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% NOTA: els seguents packages son necessaris per utilitzar la
+%%%       plantilla seguent:
+%%%       ifthen,calc,helvet,pslatex,fancyhdr,nextpage,subfigure,tocloft,graphicx,url
+
+%%% NOTA: Es possible que algunes distribuicions Linux o Windows.
+%%%       no portin aquests paquets instal·lats per defecte.
+%%%       En aquest cas els haureu d'instal·lar manualment.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 1- INICIALITZACIÓ
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[english,final]{setup/eetac_tfc_pfc}
+%% * OPCIONS A CONFIGURAR al \documentclass
+%%    - Estat del document: final o draft
+%%      NOTA: Draft no inserta les figures i marca només l'espai que
+%%      ocupen. També s'indica quan el text sobrepassa els marges.
+%%      Draft és molt útil per compilar ràpid el document si no és important
+%%      en aquell moment visualitzar les figures.
+%%    - Idioma PRINCIPAL del document: catalan, spanish, english, french...
+
+\usepackage[english]{babel}
+%%  * INCLOURE TOTS ELS IDIOMES QUE S'USARAN EN EL DOCUMENT
+%%    NOTA: per canviar d'idioma al mig del document usar:
+%%          \selectlanguage{nom_idioma}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 2- CÀRREGA DE PAQUETS ADICIONALS (OPCIONALS)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% NOTA: Es possible que algunes distribuicions Linux o Windows.
+%%%       no portin aquests paquets instal·lats per defecte.
+%%%       En aquest cas els haureu d'instal·lar manualment.
+
+%% El paquet inputenc és extramadament útil. 
+%% Permet escriure els accents directament amb l'editor de texte
+%% sense haver de fer coses com per exemple: introducci\'o
+%% Heu d'especificar la codificació de caracters que utilitzeu pel
+%% vostre fitxer (en aquest exemple utf8)
+\usepackage[utf8]{inputenc}
+
+%% Símbols matemàtics de la American Mathematical Society
+\usepackage{amssymb, amsmath, amsfonts}  
+
+%% El paquet array proporciona eines molt útils a l'hora de fer 
+%% equacions amb matrius
+\usepackage{array}             
+
+%% Paquet que permet fer taules fusionant cel·les de files consecutives
+\usepackage{multirow}          
+
+%% Paquet molt útil en cas de tenir taules molt llargues que 
+%   ocupin vàries pàgines
+\usepackage{longtable}          
+
+%% Permet canviar els colors del document
+\usepackage{color,colortbl}
+
+%% Paquet molt útil que permet activar links en el PDF final.
+\usepackage[
+  	% CUSTOM PDF 
+  	pdfauthor={Fernando Román García},
+  	pdftitle={Master thesis - Fernando Román García},
+	pdfsubject={An enhanced SleuthKit GUI for digital forensics},
+	pdfkeywords={digital, forensics, sleuth, kit, GUI},
+	%
+  	pdfcreator={EETAC-UPC},
+	pdfproducer={LaTeX, dvipdf},
+	pdfdisplaydoctitle=true,
+  	plainpages=false,
+	linktocpage=true,
+	colorlinks=true,
+  	linkcolor=blue,
+	citecolor=blue,
+	urlcolor=blue,
+	hyperfootnotes=false,
+  	pagebackref=true,
+	pdfpagelabels=true,
+	pdfpagemode=UseOutlines,
+]{hyperref} 
+
+%% NOTA IMPORTANT!:
+%% Per tal que hyperef funcioni correctament amb els capitols o seccions no
+%% numerats (\chapter*{}), com per exemple introducció, conclusions i
+%% bibliografia cal posar les dues comandes seguents ABANS del \chapter*{} en
+%% questió
+%\cleardoublepage \phantomsection
+
+%% Permet trencar links URL. 
+%% Atenció! afegir aquest paquet DESPRES del hyperref!!
+\usepackage{breakurl} 
+
+%% Permet arranjar matricialment multiples figures
+%% NOTA: afegir aquest paquet DESPRES del hyperref!!
+%%       Si no es desitja utilitzar aquest paquet, comentar la linia seguent
+%%       i anar TAMBE al fitxer de classe (eetac_tfc_pfc.cls) per substituir: 
+%%       \RequirePackage[subfigure]{tocloft}  per  \RequirePackage{tocloft}
+\usepackage{subfigmat}
+
+% Custom packages
+\usepackage{xparse}
+\usepackage{listings}
+\usepackage{rotating}
+\usepackage{pdflscape}
+\usepackage{wrapfig}
+\usepackage{etoolbox}
+\usepackage{makecell}
+\usepackage{lscape}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 3- DOCUMENT
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% Configuració de les dades i variables boleanes rellevants del document:
+\input{setup/dades.tex}  
+
+%%% Configuració de MACROS o ENTORNS (opcionals) definides per l'usuari:
+\input{setup/user-macros.tex}  
+
+%%% Configuració manual de les regles d'hyphenation:
+\input{setup/hyphenation.tex}  
+
+%%% Configurations of programming languages highlights 
+\input{setup/listings}
+
+\begin{document}
+
+%% Seleccionar l'idioma principal del document:
+\selectlanguage{english}
+
+\beforepreface  
+
+%% RESUM i OVERVIEW
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% NOTA: les longituds passades com a parametres d'entrada  s'han d'ajustar
+% manualment fins que el requadre del resum/overview ocupi tota la pàgina. 
+
+%%% Resum en català (o castellà)
+%\begin{resum}{10cm} Aquest document conté les pautes del format de presentació
+%del treball o projecte de %final de carrera. En tot cas, cal tenir en compte
+%el que estableix la ``Normativa del %treball de fi de carrera (TFC) i del
+%projecte de fi de carrera (PFC)'' aprovada per la %Comissió Permanent de
+%l'EETAC, especialment l'apartat ``Requeriments del treball''.  \end{resum}
+
+%%% Resum en anglès
+\begin{overview}{7cm}
+The amount of digital information is growing every day. Due to its persistence
+is often used as evidence on judgements. Digital forensics is a science that is
+intended to found this proofs in order to make a reconstruction of the facts. 
+
+There are many tools to extract this information. Two well-known user
+interfaces are \textit{EnCase Forensic} and \textit{Autopsy}. Those softwares
+offer the possibility to see the file system of an image without modifying it
+(to preserve proof integrity), recover deleted files, generate timelines and
+even search functions to find clues that helps their cases.
+
+However, there are no open-source user-friendly interfaces that can run over
+\textit{Windows}, \textit{Linux} and \textit{Max OS}. In this project a new
+software, \textit{Img-spy}, was created to perform those operations regardless
+of the operating system.
+
+With such a goal, in this project we have built \textit{The Sleuth Kit
+JavaScript} wrapper, which provides a JavaScript interface to the widely-use
+cross-platform open-source \textit{Sleuth Kit} C library.  With such a wrapper,
+JavaScript can be used to develop new applications for digital forensics
+analysis.
+
+Besides being multi-platform, this project has been targeted to create a
+user-friendly framework for the usual digital forensics' work flow. This
+obvious purpose is very difficult to achieve because users have different
+preferences. Then, \textit{Img-spy} user interface is intended to be
+customizable, giving the option to adjust the size of the interface panels and
+supporting multiple themes.
+
+The results of this project are a good example of how a scalable application
+can be built using flux-like architecture based on \textit{React-Redux}
+packages. Those modern libraries create a unidirectional data flow that starts
+with actions that modify the current state of the application and so affect the
+views of the user interface.
+\end{overview}
+
+
+%NOTA: En cas d'utilitzar l'espanyol com a idioma principal del document, el
+%latex anomena les taules com a 'Cuadros'. Si es desitja canviar aquesta
+%nomenclatura i utilitzar la paraula 'Tabla' descomentar les línies següents:
+%\def\listtablename{Índice de tablas} \def\tablename{Tabla}%
+
+
+
+% Amb aqueta comanda indiquem que ja s'han inclòs tots els apartats del prefaci
+% del projecte o podem començar a incloure els capitols de la memòria
+\afterpreface
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%% INCLOURE A PARTIR D'AQUÍ TOTS ELS CAPÍTOLS DE LA MEMORIA   %%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% NOTA: recordar que la introducció i les conclusions són capítols NO
+% enumerats, per tant s'ha d'usar \chapter*
+
+% NOTA: és aconsellable incloure els capítols de la memòria en fitxers separats
+% utlitzant la comanda \input  Per exemple: \input{capitol1}  que farà que
+% s'inclogui el fitxer capitol1.tex
+
+% NOTA: Si es vol incloure agraïments i/o glosari, fer-ho utilitzant
+% \chapter*{} i incloure'ls abans la introducció
+
+\input{chapters/introduction}
+\input{chapters/state-of-the-art}
+% \input{chapters/digital-forensics}
+% \input{chapters/cp-development}
+% \input{chapters/sw-architecture}
+\input{chapters/tsk-js}
+% \input{chapters/img-spy}
+\input{chapters/conclusions}
+
+%%%  BIBLIOGRAFIA
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\input{bibliography/bibliography}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%                           APENDIXS                         %%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pagestyle{empty}  % no tocar
+
+%% Descomentar una de les dues línies següents, en funció de:
+%%  a) els apendixs s'encuadernaran apart (amb portada) 
+%%  b) els apendixs s'enquadernen amb el mateix projecte (sense portada). 
+%% Recordeu que si tot el document (amb apèndixs) excedeix les 100 pagines 
+%% s'ha d'enquadernar a part
+%\appendix\ambportada
+\appendix\senseportada
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%% INCLOURE A PARTIR D'AQUI TOTS ELS CAPÍTOLS DELS APENDIXS   %%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\input{appendix/electron-main}
+\input{appendix/tsk-js-tpyings}
+% \input{appendix/glossary}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% i  aixo es tot! ;)
+\end{document}
+
+
+
+
+
+

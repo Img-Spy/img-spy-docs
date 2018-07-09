@@ -1,0 +1,14 @@
+// 
+*.swp
+plantilla_tfc.*
+!plantilla_tfc.tex
+!plantilla_tfc.bib
+
+
+// 
+// .vim/
+
+
+// Generated
+*/output/*
+!output/.empty
