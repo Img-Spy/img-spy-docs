@@ -1,10 +1,14 @@
 \chapter{State of the art}
 \label{S:state-of-the-art}
 
-There are many tools that are used to perform digital forensics analysis. They
-can be classified in: 
+There are many ways to extract information of digital sources that can be
+useful to find clues to solve a case, and depending on it, investigator must use
+a type of tool or another.
 
 \begin{description}
+	\item[Network tools] Network tools can capture the traffic generated from 
+	the computer that is running the program.
+
 	\item[Memory tools] They hare capable to acquire the current RAM memory of
 	a computer and analyze it. They often have tools to list the processes
 	running at that moment, get networking information (IP address, ARP tables,
@@ -16,10 +20,15 @@ can be classified in:
 	recover the deleted ones. Sometimes they offer higher level functionalities 
 	as generate timelines of the disk activity, get the history of internet
 	navigation, etc.
-
-	\item[Network tools] Network tools can capture the traffic generated from 
-	the computer that is running the program.
 \end{description}
+
+Network tools must run at the exact same moment as the evidence is generated
+but they can be executed on a different machine. By comparison, memory tools can
+be executed after the proof generation but are lost when the machine turns off
+and the acquisition must be executed directly on the data source. Finally, disk
+tools clues can just be lost by removing the physical proof so they are easier 
+to get. Also, to acquire the data, they only need the physical memory storage
+and a specific hardware, called write-blocker.
 
 Some examples are shown in Table \ref{T:digital-forensic-tools}.
 
