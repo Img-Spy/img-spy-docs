@@ -2,19 +2,39 @@
 \label{S:img-spy}
 
 Imgspy is GUI (graphic user interface) that performs digital forensic analysis
-using the sleuthkit as library. It is divided in a frontend and a backend. 
+using the sleuthkit as library. It is coded using Typescript for the logic,
+HTML5 to define the view and Sass the look and feel. Javascript and CSS are not 
+directly used because Typescript increases the code reliability since types 
+can be defined while Sass adds flexibility to the style definition, such as, functions and inheritance.
 
+The source code of the project is within the \textit{src} folder. Typescript
+and Sass need to be compiled because they cannot be directly interpreted. For
+this reason, \textit{dist} folder contains all the source code changing the 
+Typescript files for Javascript ones and Sass for CSS.
+
+The application is divided in a frontend and a backend. The last one is 
+responsible of the costly operations and the window management, while frontend
+shows the user interface.
+
+\begin{description}
+	\item[main] Typescript files of the backend.
+	\item[app] Typescript and HTML files of the frontend. They contain the view
+	and the application logic.
+	\item[lib] Javascript libraries not uploaded to npm.
+	\item[i18n] Internationalization files.
+	\item[style] Sass files. They contain the look and fell of the application.
+\end{description}
 
 %%% RESUMEN DE COMO FUNCIONA EL BACKEND
 
 Electron starts a process called Main which loads a Node.js script. It is in
 charge of manage the whole application. This process launches two instances, the
-window manager and the file system workers manager.
+WindowManager and the FileSystemWorkersManager.
 
-The window manager creates all windows shown to the user and handles the
+The WindowManager creates all windows shown to the user and handles the
 communication between them. Each window run in another process Renderer and it
 is an instance of a google chrome window that also has all the  node libraries
-included. Windows are CaseSelector, Editor and Settings.
+included. Windows are CaseSelector, Case and Settings.
 
 To perform communications, windows can listen to channel (a string) and send
 data using the object ipcRenderer from Electron. A react component called
@@ -25,7 +45,7 @@ process when all of them are closed. To do so, each type of window has it's own
 unique name. This fact also guarantees that no more than one window of each type
 is shown on the same time. 
 
-Regarding file system workers manager, it is the one that performs the digital
+Regarding FileSystemWorkersManager, it is the one that performs the digital
 forensic tasks. Since Main process must not be frozen performing long
 calculations, many child processes are called waiting for those tasks. The
 number depends on how many CPU cores have the computer running the program.
@@ -36,8 +56,46 @@ to fix a possible order mismatch due to asynchronous responses.
 
 % De todo esto podria hacer una figura para que quedara más claro
 
-
 %%% RESUMEN DE COMO FUNCIONA EL FRONTEND
 
+When a chrome window starts it always have the same file URL but with different
+arguments. For this reason, it always loads the same HTML, containing all the
+generic libraries. The arguments sent are: 
 
+\begin{description}
+	\item[view] Different depending on the window.
+	\item[uuid] Window unique identifier. 
+	\item[theme] Selects a different view palette.
+\end{description}
+
+When the application starts, there is no selected case so CaseSelector window 
+shows up. This window just contains a folder picker to select the current case
+to work.
+
+Once selected, the window manager opens Case window. It is divided in tree
+tools: Editor, Timeline and Search. Each of theme is in charge of a specific
+analysis.
+
+Editor tool gives a generic overview of the selected folder and files contained 
+inside disk images. It has a file system watcher that notifies any modification
+on the folder by dispatching action within Redux framework. Those are reduced
+modifying the current state and build a file system tree inside a Javascript
+object.
+
+Sometimes actions are mapped to new ones using ReduxObservables. For instance,
+when a raw disk image is detected inside the folder, a new action is dispatched
+to notify the backend to perform a generic analysis to this image and to 
+compute it's hash. This last one is used to guarantee proof integrity during
+the analysis. The file system tree is extended with a deeper analysis that
+retrieves files inside the image.
+
+The Case file system tree has a context menu that allows the generation of
+timelines. When generated, the Timeline tool has a table of all the actions 
+performed to this disk image, for instance, file creations, modifications and
+accesses.
+
+Furthermore, the file system context menu has an item to perform search inside
+images. Those searches will appear inside Search tool. It contains a table
+with all the occurrences of the selected string. Finally there is another
+option on the context menu to export files outside the image.
 
