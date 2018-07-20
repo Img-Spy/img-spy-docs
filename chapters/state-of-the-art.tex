@@ -1,4 +1,4 @@
-\chapter{State of the art}
+\chapter{Digital forensic tools}
 \label{S:state-of-the-art}
 
 There are many ways to extract information of digital sources that can be
@@ -30,7 +30,18 @@ tools clues can just be lost by removing the physical proof so they are easier
 to get. Also, to acquire the data, they only need the physical memory storage
 and a specific hardware, called write-blocker.
 
-Some examples are shown in Table \ref{T:digital-forensic-tools}.
+There is a big amount of digital forensics tools but just a few that have a good
+graphic user interface (GUI). And most of those user interfaces are developed 
+windows users. Therefore, those two parameters must be considered.
+
+Table \ref{T:digital-forensic-tools} contains some well-known tools used in
+this subject. As we can see, regarding disk tools, Digital Forensics Framework 
+(DFF), is an obsolete project with two years without any update. On the other
+hand, we have Autopsy, that is a very good software but, even though it can be 
+used on UNIX platforms, investigators don't use it because it is very difficult
+to install. Furthermore, its technologies are quite older since newer cross
+platform applications are developed using web technologies because they are now
+very mature.
 
 \begin{landscape}
 \begin{table}
@@ -87,7 +98,8 @@ Some examples are shown in Table \ref{T:digital-forensic-tools}.
 		\checkmark & \checkmark & \checkmark & \checkmark & \checkmark &
 		\makecell{
 			From The Sleuth Kit creators. \\
-			Difficult to compile in UNIX systems.
+			Difficult to compile in UNIX systems. \\
+			Old technologies.
 		} \\ \hline
 		% ----------------------------------------------------------------------
 		Wireshark & Network &
@@ -106,6 +118,7 @@ Some examples are shown in Table \ref{T:digital-forensic-tools}.
 	\label{T:digital-forensic-tools}
 \end{table}
 \end{landscape}
+
 
 % Fuentes:
 % https://resources.infosecinstitute.com/computer-forensics-tools/#gref
